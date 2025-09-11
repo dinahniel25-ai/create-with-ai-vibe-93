@@ -56,12 +56,32 @@ export default function PerfectPromptSection() {
 
   const buildPrompt = () => {
     const { context, function: func, style, details } = promptElements;
-    const builtPrompt = `${context} ${func} ${style} ${details}`.trim();
-    setUserPrompt(builtPrompt);
+    
+    if (!context || !func) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in at least Context and Function fields.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Create Claude prompt
+    const claudePrompt = `Please create a professional prompt for AI app builders using these details:
+
+Context: ${context}
+Function: ${func}
+Style: ${style}
+Details: ${details}
+
+Format it as a clear, detailed prompt perfect for Lovable AI, Replit, Tempo Labs, or Bubble. Make it specific and actionable.`;
+
+    // Open Claude with pre-filled prompt
+    window.open(`https://claude.ai/chat?q=${encodeURIComponent(claudePrompt)}`, '_blank');
     
     toast({
-      title: "Prompt Built! 🎯",
-      description: "Your AI-ready prompt has been generated!",
+      title: "Opening Claude! 🤖",
+      description: "Claude will help build your perfect prompt!",
     });
   };
 
@@ -148,7 +168,7 @@ export default function PerfectPromptSection() {
                 className="bg-gradient-primary text-white px-6 py-3 text-lg font-semibold hover:scale-105 transition-transform"
               >
                 <Wand2 className="w-5 h-5 mr-2" />
-                Build My Prompt
+                Build Perfect Prompt with Claude
               </Button>
             </div>
 
