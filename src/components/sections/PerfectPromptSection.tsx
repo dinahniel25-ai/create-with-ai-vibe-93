@@ -66,22 +66,30 @@ export default function PerfectPromptSection() {
       return;
     }
 
-    // Create Claude prompt
-    const claudePrompt = `Please create a professional prompt for AI app builders using these details:
-
-Context: ${context}
-Function: ${func}
-Style: ${style}
-Details: ${details}
-
-Format it as a clear, detailed prompt perfect for Lovable AI, Replit, Tempo Labs, or Bubble. Make it specific and actionable.`;
-
-    // Open Claude with pre-filled prompt
-    window.open(`https://claude.ai/chat?q=${encodeURIComponent(claudePrompt)}`, '_blank');
+    // Generate basic structured prompt
+    const basicPrompt = `${context} ${func}${style ? ` ${style}` : ''}${details ? ` ${details}` : ''}`.trim();
+    setUserPrompt(basicPrompt);
     
     toast({
-      title: "Opening Claude! 🤖",
-      description: "Claude will help build your perfect prompt!",
+      title: "Prompt Generated! 🎯",
+      description: "Your basic prompt is ready! Use refinement tools to enhance it.",
+    });
+  };
+
+  const openRefinementTool = (toolUrl: string, toolName: string) => {
+    if (!userPrompt) return;
+    
+    // Copy to clipboard
+    navigator.clipboard.writeText(userPrompt);
+    
+    // Open tool
+    window.open(toolUrl, '_blank');
+    
+    // Show instruction
+    toast({
+      title: `Prompt copied! 📋`,
+      description: `Paste it in ${toolName} and ask: "Please make this prompt more detailed and specific for AI app builders like Lovable AI, Replit, and Tempo Labs."`,
+      duration: 6000
     });
   };
 
@@ -168,31 +176,67 @@ Format it as a clear, detailed prompt perfect for Lovable AI, Replit, Tempo Labs
                 className="bg-gradient-primary text-white px-6 py-3 text-lg font-semibold hover:scale-105 transition-transform"
               >
                 <Wand2 className="w-5 h-5 mr-2" />
-                Build Perfect Prompt with Claude
+                Build My Prompt
               </Button>
             </div>
 
             {userPrompt && (
-              <div>
-                <label className="block text-sm font-medium mb-2 text-foreground">
-                  Your AI-Ready Prompt:
-                </label>
-                <div className="relative">
-                  <Textarea
-                    value={userPrompt}
-                    onChange={(e) => setUserPrompt(e.target.value)}
-                    className="bg-primary/5 border-primary/20 min-h-[100px] pr-12"
-                  />
-                  <Button
-                    size="sm"
-                    onClick={() => copyPrompt(userPrompt)}
-                    className="absolute top-2 right-2"
-                    variant="outline"
-                  >
-                    <Copy className="w-4 h-4" />
-                  </Button>
+              <>
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-foreground">
+                    Your AI-Ready Prompt:
+                  </label>
+                  <div className="relative">
+                    <Textarea
+                      value={userPrompt}
+                      onChange={(e) => setUserPrompt(e.target.value)}
+                      className="bg-primary/5 border-primary/20 min-h-[100px] pr-12"
+                    />
+                    <Button
+                      size="sm"
+                      onClick={() => copyPrompt(userPrompt)}
+                      className="absolute top-2 right-2"
+                      variant="outline"
+                    >
+                      <Copy className="w-4 h-4" />
+                    </Button>
+                  </div>
                 </div>
-              </div>
+
+                <div className="mt-6 p-6 bg-gradient-hero/10 rounded-lg border">
+                  <h4 className="text-lg font-semibold mb-4 text-foreground text-center">
+                    🔧 Want to make your prompt even better? Choose a refinement tool:
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <Button
+                      onClick={() => openRefinementTool('https://claude.ai/chat', 'Claude.ai')}
+                      className="flex flex-col items-center p-4 h-auto bg-purple-600 hover:bg-purple-700 text-white"
+                    >
+                      <span className="text-2xl mb-2">🤖</span>
+                      <span className="font-semibold">Claude.ai</span>
+                      <span className="text-sm opacity-90">Get professional refinement</span>
+                    </Button>
+                    
+                    <Button
+                      onClick={() => openRefinementTool('https://chat.openai.com/', 'ChatGPT')}
+                      className="flex flex-col items-center p-4 h-auto bg-green-600 hover:bg-green-700 text-white"
+                    >
+                      <span className="text-2xl mb-2">💬</span>
+                      <span className="font-semibold">ChatGPT</span>
+                      <span className="text-sm opacity-90">Enhance with AI</span>
+                    </Button>
+                    
+                    <Button
+                      onClick={() => openRefinementTool('https://gemini.google.com/app', 'Gemini')}
+                      className="flex flex-col items-center p-4 h-auto bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                      <span className="text-2xl mb-2">⚡</span>
+                      <span className="font-semibold">Gemini</span>
+                      <span className="text-sm opacity-90">Quick improvements</span>
+                    </Button>
+                  </div>
+                </div>
+              </>
             )}
           </CardContent>
         </Card>
