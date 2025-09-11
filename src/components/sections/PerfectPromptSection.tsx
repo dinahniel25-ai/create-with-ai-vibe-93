@@ -209,7 +209,7 @@ export default function PerfectPromptSection() {
                   </h4>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <Button
-                      onClick={() => openRefinementTool('https://claude.ai/chat', 'Claude.ai')}
+                      onClick={() => openRefinementTool('https://claude.ai/', 'Claude.ai')}
                       className="flex flex-col items-center p-4 h-auto bg-purple-600 hover:bg-purple-700 text-white"
                     >
                       <span className="text-2xl mb-2">🤖</span>
@@ -227,7 +227,7 @@ export default function PerfectPromptSection() {
                     </Button>
                     
                     <Button
-                      onClick={() => openRefinementTool('https://gemini.google.com/app', 'Gemini')}
+                      onClick={() => openRefinementTool('https://gemini.google.com/', 'Gemini')}
                       className="flex flex-col items-center p-4 h-auto bg-blue-600 hover:bg-blue-700 text-white"
                     >
                       <span className="text-2xl mb-2">⚡</span>
